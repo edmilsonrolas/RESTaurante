@@ -12,7 +12,7 @@ namespace api.Dtos.Encomenda
         public string Cliente { get; set; } = string.Empty;
         public DateTime DataEncomenda { get; set; }
         public EstadoEncomenda Estado { get; set; }
+        public List<EncomendaPratoReadDto> Pratos { get; set; } = new();
         public decimal ValorTotal { get; set; }
-        public List<string>? Pratos { get; set; }
     }
 }

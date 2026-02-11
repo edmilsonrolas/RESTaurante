@@ -17,10 +17,18 @@ namespace api.Mappers
                 Cliente = encomendaModel.Cliente!.Nome,
                 DataEncomenda = encomendaModel.DataEncomenda,
                 Estado = encomendaModel.Estado,
-                ValorTotal = encomendaModel.ValorTotal,
+
                 Pratos = encomendaModel.Pratos!
-                    .Select(p => $"{p.Quantidade} x {p.Prato!.Nome}")
-                    .ToList()
+                    .Select(pe => new EncomendaPratoReadDto
+                    {
+                        PratoId = pe.PratoId,
+                        PratoNome = pe.Prato!.Nome,
+                        Quantidade = pe.Quantidade,
+                        PrecoUnitario = pe.PrecoUnitario,
+                        Subtotal = pe.Subtotal
+                    }).ToList(),
+
+                ValorTotal = encomendaModel.ValorTotal
             };
         }
     }

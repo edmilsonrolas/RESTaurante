@@ -27,13 +27,13 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEncomendas()
         {
-            var encomendaDtos = await _context.Encomendas
+            var encomendas = await _context.Encomendas
                 .Include(e => e.Cliente)
                 .Include(e => e.Pratos)
                     .ThenInclude(pe => pe.Prato)
                 .ToListAsync();
 
-            return Ok(encomendaDtos.Select(e => e.ToEncomendaReadDto()));
+            return Ok(encomendas.Select(e => e.ToEncomendaReadDto()));
         }
 
         // GET: api/encomendas/{id}
