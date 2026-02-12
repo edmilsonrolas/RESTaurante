@@ -54,6 +54,20 @@ namespace api.Services
             return prato.ToPratoReadDto();
         }
 
+        public async Task<PratoReadDto?> PatchAsync(int id, PratoPatchDto dto)
+        {
+            var prato = await _context.Pratos.FindAsync(id);
+            if (prato == null) return null;
+
+            if (dto.Nome != null) prato.Nome = dto.Nome;
+            if (dto.Descricao != null) prato.Descricao = dto.Descricao;
+            if (dto.Preco.HasValue) prato.Preco = dto.Preco.Value;
+            if (dto.Categoria.HasValue) prato.Categoria = dto.Categoria.Value;
+
+            await _context.SaveChangesAsync();
+            return prato.ToPratoReadDto();
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var prato = await _context.Pratos.FindAsync(id);

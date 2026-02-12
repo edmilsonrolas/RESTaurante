@@ -35,7 +35,7 @@ namespace api.Controllers
 
         // POST: api/pratos
         [HttpPost]
-        public async Task<IActionResult> CreatePrato(PratoCreateDto pratoCreateDto)
+        public async Task<IActionResult> Create(PratoCreateDto pratoCreateDto)
         {
             var prato = await _service.CreateAsync(pratoCreateDto);
             return CreatedAtAction(nameof(GetById), new {id = prato.Id}, prato);
@@ -43,10 +43,18 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdatePrato([FromRoute] int id, [FromBody] PratoUpdateDto pratoUpdateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PratoUpdateDto pratoUpdateDto)
         {
             var prato = await _service.UpdateAsync(id, pratoUpdateDto);
             return prato == null ? NotFound() : Ok(prato);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch(int id, [FromBody] PratoPatchDto dto)
+        {
+            var prato = await _service.PatchAsync(id, dto);
+            return prato == null ? NotFound() : Ok(prato);
+
         }
 
         [HttpDelete]

@@ -5,4 +5,20 @@ Accept: application/json
 
 ###
 
-GET https://localhost:7154/api/encomendas
+GET http://localhost:5188/api/pedidos
+
+
+###
+
+GET http://localhost:5188/api/pratos
+
+###
+
+PATCH  http://localhost:5188/api/pratos/1003
+Content-Type: application/json
+Accept: application/json
+
+{
+    "preco": 12.90
+}
+

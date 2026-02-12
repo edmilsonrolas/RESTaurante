@@ -12,6 +12,7 @@ namespace api.Services.Interfaces
         Task<PratoReadDto> GetByIdAsync(int id);
         Task<PratoReadDto> CreateAsync(PratoCreateDto dto);
         Task<PratoReadDto> UpdateAsync(int id, PratoUpdateDto dto);
+        Task<PratoReadDto> PatchAsync(int id, PratoPatchDto dto);
         Task<bool> DeleteAsync(int id);
     }
 }
