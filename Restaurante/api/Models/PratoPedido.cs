@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class PratoEncomenda
+    public class PratoPedido
     {
-        public int PratoEncomendaId { get; set; }
-        public int EncomendaId { get; set; }
+        public int PratoPedidoId { get; set; }
+        public int PedidoId { get; set; }
         public int PratoId { get; set; }
         public int Quantidade { get; set; }
         [Column(TypeName = "decimal(18,2)")]
@@ -18,7 +18,7 @@ namespace api.Models
         public decimal Subtotal { get; set; }
 
         // Navegação 
-        public Encomenda? Encomenda { get; set; }
+        public Pedido? Pedido { get; set; }
         public Prato? Prato { get; set; }
     }
 }

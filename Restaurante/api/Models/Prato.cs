@@ -17,6 +17,6 @@ namespace api.Models
         public CategoriaPrato  Categoria { get; set; }
         public bool Disponivel { get; set; } = true;
         public DateTime DataCriacao { get; set; } = DateTime.Now;
-        public ICollection<PratoEncomenda>? Encomendas { get; set; }
+        public ICollection<PratoPedido>? Pedidos { get; set; }
     }
 }

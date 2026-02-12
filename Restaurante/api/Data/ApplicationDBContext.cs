@@ -17,9 +17,9 @@ namespace api.Data
         }
 
         public DbSet<Prato> Pratos {get; set;}
-        public DbSet<Encomenda> Encomendas {get; set;}
+        public DbSet<Pedido> Pedidos {get; set;}
         public DbSet<Cliente> Clientes {get; set;}
         public DbSet<Trabalhador> Trabalhadores {get; set;}
-        public DbSet<PratoEncomenda> PratosEncomenda {get; set;}
+        public DbSet<PratoPedido> PratosPedido {get; set;}
     }
 }

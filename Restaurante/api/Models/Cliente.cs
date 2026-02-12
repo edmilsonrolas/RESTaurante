@@ -15,6 +15,6 @@ namespace api.Models
         public string Telefone { get; set; } = string.Empty;
         public string? Email { get; set; } = string.Empty;
         public string? Endereco { get; set; } = string.Empty;
-        public ICollection<Encomenda>? Encomendas { get; set; }
+        public ICollection<Pedido>? Pedidos { get; set; }
     }
 }

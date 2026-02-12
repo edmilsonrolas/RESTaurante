@@ -7,19 +7,19 @@ using api.Enums;
 
 namespace api.Models
 {
-    public class Encomenda
+    public class Pedido
     {
-        public int EncomendaId { get; set; }
+        public int PedidoId { get; set; }
         public int ClienteId { get; set; }
         public int TrabalhadorId { get; set; }
-        public DateTime DataEncomenda { get; set; } = DateTime.Now;
-        public EstadoEncomenda Estado { get; set; }
+        public DateTime DataPedido { get; set; } = DateTime.Now;
+        public EstadoPedido Estado { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal ValorTotal { get; set; }
 
             // Navegação
         public Cliente Cliente { get; set; } = null!;
         public Trabalhador Trabalhador { get; set; } = null!;
-        public ICollection<PratoEncomenda> Pratos { get; set; } = new List<PratoEncomenda>();
+        public ICollection<PratoPedido> Pratos { get; set; } = new List<PratoPedido>();
     }
 }

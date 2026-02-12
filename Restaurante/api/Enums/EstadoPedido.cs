@@ -1,6 +1,6 @@
 namespace api.Enums
 {
-    public enum EstadoEncomenda
+    public enum EstadoPedido
     {
         Pendente = 1,
         EmPreparacao = 2,

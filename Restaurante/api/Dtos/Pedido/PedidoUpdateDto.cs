@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Enums;
 
-namespace api.Dtos.Encomenda
+namespace api.Dtos.Pedido
 {
-    public class EncomendaUpdateDto
+    public class PedidoUpdateDto
     {
         public int ClienteId { get; set; }
         public int TrabalhadorId { get; set; }
-        public EstadoEncomenda Estado { get; set; }
+        public EstadoPedido Estado { get; set; }
         public List<PratoQuantidadeDto>? Pratos { get; set; }
     }
 }

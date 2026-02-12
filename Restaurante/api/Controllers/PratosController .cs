@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Prato;
 using api.Mappers;
+using api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,73 +15,43 @@ namespace api.Controllers
     [Route("api/pratos")]
     public class PratosController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        public PratosController (ApplicationDBContext context)
+        private readonly IPratoService _service;
+        public PratosController (IPratoService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/pratos
         [HttpGet]
-        public async Task<IActionResult> GetPratos()
-        {
-            var pratoDtos = await _context.Pratos
-            .Select(prato => prato.ToPratoReadDto())
-            .ToListAsync();
-
-            return Ok(pratoDtos);
-        }
+        public async Task<IActionResult> GetAll()
+            => Ok(await _service.GetAllAsync());    // o mesmo q return Ok(await _service.GetAllAsync());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var prato = await _context.Pratos.FindAsync(id);
-            
-            if (prato == null) return NotFound();
-
-            return Ok(prato.ToPratoReadDto());
+            var prato = await _service.GetByIdAsync(id);
+            return prato == null ? NotFound() : Ok(prato);
         }
 
         // POST: api/pratos
         [HttpPost]
         public async Task<IActionResult> CreatePrato(PratoCreateDto pratoCreateDto)
         {
-            var pratoModel = pratoCreateDto.ToPratoFromCreateDto();
-            await _context.Pratos.AddAsync(pratoModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new {id = pratoModel.PratoId}, pratoModel.ToPratoReadDto());
+            var prato = await _service.CreateAsync(pratoCreateDto);
+            return CreatedAtAction(nameof(GetById), new {id = prato.Id}, prato);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> UpdatePrato([FromRoute] int id, [FromBody] PratoUpdateDto pratoUpdateDto)
         {
-            var pratoModel = await _context.Pratos.FirstOrDefaultAsync(p => p.PratoId == id);
-
-            if (pratoModel == null) return NotFound();
-
-            pratoModel.Nome = pratoUpdateDto.Nome;
-            pratoModel.Descricao = pratoUpdateDto.Descricao;
-            pratoModel.Preco = pratoUpdateDto.Preco;
-            pratoModel.Categoria = pratoUpdateDto.Categoria;
-
-            await _context.SaveChangesAsync();
-            return Ok(pratoModel.ToPratoReadDto());
+            var prato = await _service.UpdateAsync(id, pratoUpdateDto);
+            return prato == null ? NotFound() : Ok(prato);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeletePrato([FromRoute] int id)
-        {
-            var pratoModel = await _context.Pratos.FirstOrDefaultAsync(p => p.PratoId == id);
-
-            if (pratoModel == null) return NotFound();
-
-            _context.Pratos.Remove(pratoModel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+            => await _service.DeleteAsync(id) ? NoContent() : NotFound();
     }
 }

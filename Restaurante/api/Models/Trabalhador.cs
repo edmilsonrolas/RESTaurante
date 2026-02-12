@@ -14,6 +14,6 @@ namespace api.Models
         public string Email { get; set; } = string.Empty;
         public DateTime DataContratacao { get; set; } = DateTime.Now;
         public bool Activo { get; set; } = true;
-        public ICollection<Encomenda>? Encomendas { get; set; }
+        public ICollection<Pedido>? Pedidos { get; set; }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Dtos.Encomenda
+namespace api.Dtos.Pedido
 {
-    public class EncomendaCreateDto
+    public class PedidoCreateDto
     {
         public int ClienteId { get; set; }
         public int TrabalhadorId { get; set; }

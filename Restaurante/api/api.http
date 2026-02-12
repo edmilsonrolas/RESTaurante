@@ -4,3 +4,5 @@ GET {{api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET https://localhost:7154/api/encomendas
