@@ -7,6 +7,7 @@ using api.Dtos.Pedido;
 using api.Enums;
 using api.Mappers;
 using api.Models;
+using api.Repositories.Interfaces;
 using api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,32 +15,23 @@ namespace api.Services
 {
     public class PedidoService : IPedidoService
     {
+        private readonly IPedidoRepository _pedidoRepository;
+        private readonly IPratoRepository _pratoRepository;
         private readonly ApplicationDBContext _context;
-        public PedidoService(ApplicationDBContext context)
+
+        public PedidoService(IPedidoRepository pedidoRepository, IPratoRepository pratoRepository, ApplicationDBContext context)
         {
+            _pedidoRepository = pedidoRepository;
+            _pratoRepository = pratoRepository;
             _context = context;
         }
-        public async Task<IEnumerable<PedidoReadDto>> GetAllAsync()
-        {
-            var pedidos = await _context.Pedidos
-                .Include(pd => pd.Cliente)
-                .Include(pd => pd.Pratos)
-                    .ThenInclude(pp => pp.Prato)
-                .ToListAsync();
 
-            return pedidos.Select(pd => pd.ToPedidoReadDto());
-        }
+        public async Task<IEnumerable<PedidoReadDto>> GetAllAsync()
+            => (await _pedidoRepository.GetAllAsync())
+                .Select(pd => pd.ToPedidoReadDto());
 
         public async Task<PedidoReadDto?> GetByIdAsync(int id)
-        {
-            var pedido = await _context.Pedidos
-                .Include(pd => pd.Cliente)
-                .Include(pd => pd.Pratos)
-                    .ThenInclude(pp => pp.Prato)
-                .FirstOrDefaultAsync(pd => pd.PedidoId == id);
-
-            return pedido?.ToPedidoReadDto();
-        }
+            => (await _pedidoRepository.GetByIdAsync(id))?.ToPedidoReadDto();
         
         public async Task<PedidoReadDto> CreateAsync(PedidoCreateDto dto)
         {
@@ -55,17 +47,15 @@ namespace api.Services
                 ValorTotal = 0
             };
 
-            _context.Pedidos.Add(pedido);
-            await _context.SaveChangesAsync();
+            await _pedidoRepository.AddAsync(pedido);
 
             decimal total = 0;
 
             foreach (var item in dto.Pratos!)
             {
-                var prato = await _context.Pratos.FindAsync(item.PratoId);
-                if (prato == null)
-                    throw new KeyNotFoundException($"Prato com ID {item.PratoId} não existe");
-
+                var prato = await _pratoRepository.GetByIdAsync(item.PratoId) 
+                    ?? throw new KeyNotFoundException($"Prato com ID {item.PratoId} não existe");
+                    
                 var subtotal = prato.Preco * item.Quantidade;
                 total += subtotal;
 

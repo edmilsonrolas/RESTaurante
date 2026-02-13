@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Models;
 using api.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
 {
@@ -15,20 +16,25 @@ namespace api.Repositories
         {
             _context = context;
         }
-        
-        public Task AddAsync(Pedido pedido)
+
+        public async Task AddAsync(Pedido pedido)
         {
-            throw new NotImplementedException();
+            await _context.Pedidos.AddAsync(pedido);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Pedido>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Pedido>> GetAllAsync()
+            => await _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Pratos)
+                    .ThenInclude(pp => pp.Prato)
+                .ToListAsync();
 
-        public Task<Pedido?> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Pedido?> GetByIdAsync(int id)
+            => await _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Pratos)
+                    .ThenInclude(pp => pp.Prato)
+                .FirstOrDefaultAsync(p => p.PedidoId == id);
     }
 }
