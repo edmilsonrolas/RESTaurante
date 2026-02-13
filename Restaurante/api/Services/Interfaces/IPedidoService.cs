@@ -9,7 +9,7 @@ namespace api.Services.Interfaces
     public interface IPedidoService
     {
         Task<IEnumerable<PedidoReadDto>> GetAllAsync();
-        Task<PedidoReadDto> GetByIdAsync();
-        Task<PedidoReadDto> CreateAsync();
+        Task<PedidoReadDto> GetByIdAsync(int id);
+        Task<PedidoReadDto> CreateAsync(PedidoCreateDto dto);
     }
 }
