@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260217072456_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,14 +82,16 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TipoPessoa")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoPessoa")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Pessoas");
 
-                    b.HasDiscriminator<int>("TipoPessoa");
+                    b.HasDiscriminator<string>("TipoPessoa").HasValue("Pessoa");
 
                     b.UseTphMappingStrategy();
                 });
@@ -160,7 +165,7 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Models.Pessoa");
 
-                    b.HasDiscriminator().HasValue(0);
+                    b.HasDiscriminator().HasValue("Cliente");
                 });
 
             modelBuilder.Entity("api.Models.Trabalhador", b =>
@@ -174,7 +179,7 @@ namespace api.Migrations
                     b.Property<DateTime>("DataContratacao")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue(1);
+                    b.HasDiscriminator().HasValue("Trabalhador");
                 });
 
             modelBuilder.Entity("api.Models.Pedido", b =>

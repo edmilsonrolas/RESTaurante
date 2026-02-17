@@ -4,7 +4,7 @@ namespace api.Enums
     {
         Pendente = 1,
         EmPreparacao = 2,
-        Concluida = 3,
-        Cancelada = 4
+        Concluido = 3,
+        Cancelado = 4
     }
 }

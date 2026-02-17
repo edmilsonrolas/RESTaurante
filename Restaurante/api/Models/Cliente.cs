@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 namespace api.Models
 {
     /**
-        Mesmo que o cliente não se registe formalmente, esta entidade ajuda a manter histórico de encomendas.
+        Mesmo que o cliente não se registe formalmente, esta entidade ajuda a manter histórico de pedidos.
     */
-    public class Cliente
+    public class Cliente : Pessoa
     {
-        public int ClienteId { get; set; }
-        public string Nome { get; set; } = string.Empty;
-        public string Telefone { get; set; } = string.Empty;
-        public string? Email { get; set; } = string.Empty;
-        public string? Endereco { get; set; } = string.Empty;
-        public ICollection<Pedido>? Pedidos { get; set; }
+        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
     }
 }
