@@ -26,6 +26,10 @@ namespace api.Data
                 .HasValue<Cliente>(TipoPessoa.Cliente)
                 .HasValue<Trabalhador>(TipoPessoa.Trabalhador);
 
+            modelBuilder.Entity<Pessoa>()
+                .Property("TipoPessoa")
+                .HasConversion<string>();
+
             modelBuilder.Entity<Pedido>()
                 .HasOne(p => p.Cliente)
                 .WithMany(c => c.Pedidos)
