@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Enums;
 using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
     //allows to search/specify for tables
-    public class ApplicationDBContext(DbContextOptions dbContextOptions) : DbContext(dbContextOptions)
+    public class ApplicationDBContext(DbContextOptions dbContextOptions) : IdentityDbContext(dbContextOptions)
     {
         public DbSet<Prato> Pratos {get; set;}
         public DbSet<Pedido> Pedidos {get; set;}
@@ -21,6 +22,8 @@ namespace api.Data
         // Configuração da herança TPH através da coluna discriminadora (TipoPessoa)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // para criar as tabelas AspNetUsers, AspNetRoles, etc
+
             modelBuilder.Entity<Pessoa>()
                 .HasDiscriminator<TipoPessoa>("TipoPessoa")
                 .HasValue<Cliente>(TipoPessoa.Cliente)

@@ -11,8 +11,13 @@ namespace api.Validators.Prato
     {
         public PratoCreateDtoValidator ()
         {
-            RuleFor(p => p.Preco).GreaterThan(0)
+            RuleFor(p => p.Preco)
+                .GreaterThan(0)
                 .WithMessage("O preço deve ser maior que zero.");
+
+            RuleFor(p => p.Nome)
+                .NotEmpty().WithMessage("O nome do prato é obrigatório.")
+                .MaximumLength(10).WithMessage("100 caracteres no max");
         }
     }
 }
