@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.Prato;
 using api.Mappers;
 using api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,11 +23,11 @@ namespace api.Controllers
         }
 
         // GET: api/pratos
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetAll()
             => Ok(await _service.GetAllAsync());    // o mesmo q return Ok(await _service.GetAllAsync());
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var prato = await _service.GetByIdAsync(id);
@@ -34,14 +35,14 @@ namespace api.Controllers
         }
 
         // POST: api/pratos
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> Create(PratoCreateDto pratoCreateDto)
         {
             var prato = await _service.CreateAsync(pratoCreateDto);
             return CreatedAtAction(nameof(GetById), new {id = prato.Id}, prato);
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PratoUpdateDto pratoUpdateDto)
         {
@@ -49,7 +50,7 @@ namespace api.Controllers
             return prato == null ? NotFound() : Ok(prato);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}"), Authorize]
         public async Task<IActionResult> Patch(int id, [FromBody] PratoPatchDto dto)
         {
             var prato = await _service.PatchAsync(id, dto);
@@ -57,7 +58,7 @@ namespace api.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         [Route("{id}")]
         public async Task<IActionResult> DeletePrato([FromRoute] int id)
             => await _service.DeleteAsync(id) ? NoContent() : NotFound();

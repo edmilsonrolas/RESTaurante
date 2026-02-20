@@ -8,6 +8,7 @@ using api.Enums;
 using api.Mappers;
 using api.Models;
 using api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,19 +26,19 @@ namespace api.Controllers
         }
 
         // GET: api/pedidos
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetPedidos()
             => Ok(await _service.GetAllAsync());
 
         // GET: api/pedidos/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var pedido = await _service.GetByIdAsync(id);
             return pedido == null ? NotFound() : Ok(pedido);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> Create(PedidoCreateDto dto)
         {
             var pedido = await _service.CreateAsync(dto);
